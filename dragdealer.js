@@ -113,6 +113,8 @@ Dragdealer.prototype =
 		this.snap = this.getOption('snap', false);
 		this.loose = this.getOption('loose', false);
 		this.speed = this.getOption('speed', 10) / 100;
+		this.xPrecision = this.getOption('xPrecision', 0);
+		this.yPrecision = this.getOption('yPrecision', 0);
 		
 		this.callback = options.callback || null;
 		this.animationCallback = options.animationCallback || null;
@@ -181,8 +183,8 @@ Dragdealer.prototype =
 		this.bounds.y1 = this.wrapper.offsetHeight + this.bounds.bottom;
 		this.bounds.yRange = (this.bounds.y1 - this.bounds.y0) - this.handle.offsetHeight;
 		
-		this.bounds.xFraction = 1 / Math.max(this.wrapper.offsetWidth, this.handle.offsetWidth);
-		this.bounds.yFraction = 1 / Math.max(this.wrapper.offsetHeight, this.handle.offsetHeight);
+		this.bounds.xStep = 1 / (this.xPrecision || Math.max(this.wrapper.offsetWidth, this.handle.offsetWidth));
+		this.bounds.yStep = 1 / (this.yPrecision || Math.max(this.wrapper.offsetHeight, this.handle.offsetHeight));
 	},
 	setSteps: function()
 	{
@@ -279,6 +281,14 @@ Dragdealer.prototype =
 	{
 		this.disabled = true;
 		this.handle.className += ' disabled';
+	},
+	setStep: function(x, y, snap)
+	{
+		this.setValue(
+			this.steps && x > 1 ? (x - 1) / (this.steps - 1) : 0,
+			this.steps && y > 1 ? (y - 1) / (this.steps - 1) : 0,
+			snap
+		);
 	},
 	setValue: function(x, y, snap)
 	{
@@ -395,7 +405,7 @@ Dragdealer.prototype =
 		{
 			this.groupCopy(this.value.current, this.value.target);
 		}
-		if(this.dragging || this.glide())
+		if(this.dragging || this.glide() || first)
 		{
 			this.update();
 			this.feedback();
@@ -411,7 +421,7 @@ Dragdealer.prototype =
 		{
 			return false;
 		}
-		if(Math.abs(diff[0]) > this.bounds.xFraction || Math.abs(diff[1]) > this.bounds.yFraction)
+		if(Math.abs(diff[0]) > this.bounds.xStep || Math.abs(diff[1]) > this.bounds.yStep)
 		{
 			this.value.current[0] += diff[0] * this.speed;
 			this.value.current[1] += diff[1] * this.speed;
