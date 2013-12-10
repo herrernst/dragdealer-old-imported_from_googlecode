@@ -117,6 +117,7 @@ Dragdealer.prototype =
 		this.yPrecision = this.getOption('yPrecision', 0);
 		
 		this.callback = options.callback || null;
+		this.dragCallback = options.dragCallback || null;
 		this.animationCallback = options.animationCallback || null;
 		
 		this.bounds = {
@@ -338,6 +339,10 @@ Dragdealer.prototype =
 		];
 		
 		this.dragging = true;
+		if(typeof(this.dragCallback) == 'function')
+		{
+			this.dragCallback(this.value.target[0], this.value.target[1]);
+		}
 	},
 	stopDrag: function()
 	{
