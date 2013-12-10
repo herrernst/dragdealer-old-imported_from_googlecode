@@ -241,7 +241,14 @@ Dragdealer.prototype =
 			return !self.activity;
 		}
 		
-		this.interval = setInterval(function(){ self.animate() }, 25);
+		if (typeof window.requestAnimationFrame == 'function') {
+			window.requestAnimationFrame(function animFrame() {
+				self.animate();
+				window.requestAnimationFrame(animFrame);
+			});
+		} else {
+			this.interval = setInterval(function(){ self.animate() }, 25);
+		}
 		self.animate(false, true);
 	},
 	handleDownHandler: function(e)
