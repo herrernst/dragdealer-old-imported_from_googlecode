@@ -305,6 +305,7 @@ Dragdealer.prototype =
 		{
 			this.groupCopy(this.value.current, this.value.target);
 		}
+		this.animate();
 	},
 	startTap: function(target)
 	{
