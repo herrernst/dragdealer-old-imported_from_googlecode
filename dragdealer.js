@@ -265,7 +265,9 @@ Dragdealer.prototype =
 		Cursor.refresh(e);
 		
 		this.preventDefaults(e, true);
-		this.startTap();
+		if (this.handle.offsetWidth < this.wrapper.offsetWidth) {
+			this.startTap();
+		}
 	},
 	documentUpHandler: function(e)
 	{
