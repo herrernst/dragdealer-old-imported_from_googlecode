@@ -244,7 +244,7 @@ Dragdealer.prototype =
 		if (typeof window.requestAnimationFrame == 'function') {
 			window.requestAnimationFrame(function animFrame() {
 				self.animate();
-				window.requestAnimationFrame(animFrame);
+				self.interval = window.requestAnimationFrame(animFrame);
 			});
 		} else {
 			this.interval = setInterval(function(){ self.animate() }, 25);
@@ -424,6 +424,13 @@ Dragdealer.prototype =
 		{
 			this.update();
 			this.feedback();
+		}
+	},
+	stopAnimation: function () {
+		if (typeof window.requestAnimationFrame == 'function') {
+			window.cancelAnimationFrame(this.interval);
+		} else {
+			window.clearInterval(this.interval);
 		}
 	},
 	glide: function()
