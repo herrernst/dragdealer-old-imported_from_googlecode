@@ -1,4 +1,5 @@
 /**
+ * @license
  * Dragdealer JS v0.9.5
  * http://code.ovidiu.ch/dragdealer-js
  *
